@@ -1,6 +1,5 @@
-- publish to gihub
-- play sounds
-
+- trello set list and read from the app
+- deploy with netlify
 - add another favicon
 - Add favourite time patterns eg: 00:45 - 00:15 x8 to localstorage
 - make button to mute sounds and write to localstorage
