@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { Timer } from "./Timer";
 import { Box } from "./Box";
 import { speak } from "../utils/speak";
+import styled from "styled-components";
+
+const Exercise = styled.h1`
+  margin-bottom: 2rem;
+  text-align: "center";
+`;
 
 export const ExerciseTimer = (props) => {
-  const { sets, rest, work, close } = props;
+  const { sets, rest, work, close, exercises } = props;
   const [isRest, setIsRest] = useState(false);
   const [currentRound, setCurrentRound] = useState(1);
 
@@ -14,7 +20,13 @@ export const ExerciseTimer = (props) => {
       close();
       return;
     }
-    speak("Rest");
+
+    if (exercises.length) {
+      speak(`Rest. Next: ${exercises[currentRound].name}`);
+    } else {
+      speak("Rest");
+    }
+
     setIsRest(true);
   };
 
@@ -32,13 +44,21 @@ export const ExerciseTimer = (props) => {
       speak("10 seconds. You can do it");
     }
 
-    if (props.seconds === 2) {
+    if (props.seconds === 3) {
       speak("3,2,1");
     }
   };
 
   return (
-    <Box backgroundColor={isRest ? "#68D391" : "#ECC94B"} height="100%" display="flex" alignItems="center" justifyContent="center">
+    <Box
+      backgroundColor={isRest ? "#68D391" : "#ECC94B"}
+      height="100%"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="column"
+    >
+      {exercises.length && !isRest ? <Exercise style={{ textAlign: "center" }}>{exercises[currentRound - 1].name}</Exercise> : null}
       <div className="nes-container is-rounded">
         <Box padding="1rem">
           <Box fontSize="25px" textAlign="center">

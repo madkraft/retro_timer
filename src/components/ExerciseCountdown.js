@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Countdown from "react-countdown";
 import { speak } from "../utils/speak";
 import { Box } from "./Box";
@@ -21,21 +21,29 @@ const Doggo = styled.img`
 `;
 
 export const ExerciseCountdown = (props) => {
-  const { countDownTime, onComplete } = props;
+  const { countDownTime, onComplete, startMessage } = props;
+  const [message, setMessage] = useState();
+
+  const getMessage = (seconds) => {
+    return `Start in ${seconds}`;
+  };
 
   return (
     <Countdown
       date={countDownTime}
       onStart={() => {
-        speak("Get ready");
+        speak(startMessage);
       }}
-      onComplete={onComplete}
+      onComplete={() => {
+        setMessage("Go go go!");
+        onComplete();
+      }}
       renderer={({ seconds }) => {
         return (
           <CountdownContainer fontSize="3rem">
             <Doggo src={doggo} alt="doggo" />
             <div className="nes-balloon from-left">
-              <p>Ready {seconds}</p>
+              <p>{message ?? getMessage(seconds)}</p>
             </div>
           </CountdownContainer>
         );
