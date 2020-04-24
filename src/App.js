@@ -9,9 +9,9 @@ import { speak } from "./utils/speak";
 import { ExerciseCountdown } from "./components/ExerciseCountdown";
 import { Setup } from "./components/Setup";
 
-const DEFAULT_WORK_TIME = 10;
-const DEFAULT_REST_TIME = 5;
-const DEFAULT_SETS_NUMBER = 3;
+const DEFAULT_WORK_TIME = 45;
+const DEFAULT_REST_TIME = 15;
+const DEFAULT_SETS_NUMBER = 8;
 
 const noSleep = new NoSleep();
 

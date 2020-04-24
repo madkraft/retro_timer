@@ -19,7 +19,7 @@ export const Setup = (props) => {
   } = props;
 
   return (
-    <Box backgroundColor="#d77067" height="100%" display="flex" alignItems="center" justifyContent="center" className="pattern-dots-md">
+    <Box backgroundColor="#d77067" height="100%" display="flex" alignItems="center" justifyContent="center">
       <div className="nes-container is-rounded">
         <Box padding="1rem">
           <Counter handleIncrement={onSetsIncrement} handleDecrement={onSetsDecrement}>
