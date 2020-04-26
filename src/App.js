@@ -18,16 +18,25 @@ const noSleep = new NoSleep();
 function App() {
   const [timerActive, setTimerActive] = useState(false);
   const [preTimerActive, setPreTimerActive] = useState(false);
-  const [lists, setLists] = useState([]);
+  const [workoutList, setWorkoutList] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [sets, setSets] = useState(DEFAULT_SETS_NUMBER);
   const [workTime, setWorkTime] = useState(DEFAULT_WORK_TIME);
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME);
   const boardId = "b3SrVvdk";
+  const descriptionLabelId = "5ea544c4c52dba7aa9b89e4b";
 
   const authenticationSuccess = () => {
     window.Trello.get(`boards/${boardId}/lists`, (data) => {
-      setLists(data);
+      setWorkoutList(data);
+    });
+  };
+
+  const handleWorkoutSelect = (event) => {
+    window.Trello.get(`lists/${event.target.value}/cards`, (data) => {
+      const exercises = data.filter((exercise) => !exercise.idLabels.includes(descriptionLabelId));
+      setExercises(exercises);
+      setSets(exercises.length);
     });
   };
 
@@ -41,17 +50,8 @@ function App() {
       scope: {
         read: "true",
       },
-      expiration: "never",
       success: authenticationSuccess,
       error: authenticationFailure,
-    });
-  };
-
-  const handleWorkoutSelect = (event) => {
-    window.Trello.get(`lists/${event.target.value}/cards`, (data) => {
-      const exercises = data.filter((exercise) => exercise.idLabels.length);
-      setExercises(exercises);
-      setSets(exercises.length);
     });
   };
 
@@ -119,29 +119,11 @@ function App() {
           onRestTimeIncrement={handleRestTimeIncrement}
           onRestTimeDecrement={handleRestTimeDecrement}
           onStart={handleStart}
+          workoutList={workoutList}
+          resetWorkout={handleResetWorkout}
+          authorizeTrello={handleAuthorizeTrello}
+          selectWorkout={handleWorkoutSelect}
         />
-      )}
-
-      {window.Trello.authorized() && (
-        <>
-          <div className="nes-select">
-            <select onChange={handleWorkoutSelect}>
-              {lists.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button type="button" className="nes-btn is-warning" onClick={handleResetWorkout}>
-            Reset workout
-          </button>
-        </>
-      )}
-      {!window.Trello.authorized() && (
-        <button type="button" className="nes-btn is-warning" onClick={handleAuthorizeTrello}>
-          Get workouts
-        </button>
       )}
     </Box>
   );

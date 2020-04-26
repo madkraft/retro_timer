@@ -16,10 +16,14 @@ export const Setup = (props) => {
     workTime,
     restTime,
     onStart,
+    resetWorkout,
+    authorizeTrello,
+    selectWorkout,
+    workoutList,
   } = props;
 
   return (
-    <Box backgroundColor="#d77067" height="100%" display="flex" alignItems="center" justifyContent="center">
+    <Box backgroundColor="#d77067" height="100%" display="flex" alignItems="center" justifyContent="center" flexDirection="column">
       <div className="nes-container is-rounded">
         <Box padding="1rem">
           <Counter handleIncrement={onSetsIncrement} handleDecrement={onSetsDecrement}>
@@ -37,6 +41,29 @@ export const Setup = (props) => {
           </Button>
         </Box>
       </div>
+      <Box marginTop="2rem" display="flex">
+        {window.Trello.authorized() && (
+          <>
+            <Box className="nes-select" marginRight="2rem">
+              <select onChange={selectWorkout}>
+                {workoutList.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </Box>
+            <button type="button" className="nes-btn is-warning" onClick={resetWorkout}>
+              Clear
+            </button>
+          </>
+        )}
+        {!window.Trello.authorized() && (
+          <button type="button" className="nes-btn is-warning" onClick={authorizeTrello}>
+            Get workouts
+          </button>
+        )}
+      </Box>
     </Box>
   );
 };
