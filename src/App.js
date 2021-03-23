@@ -1,62 +1,30 @@
-import React, { useState } from 'react';
-import milliseconds from 'milliseconds';
+import React, { useState } from "react";
+import milliseconds from "milliseconds";
+import { disableBodyScroll } from "body-scroll-lock";
+import { Box } from "@chakra-ui/react";
 
-import { disableBodyScroll } from 'body-scroll-lock';
+import { ExerciseTimer } from "./components/ExerciseTimer";
+import { speak } from "./utils/speak";
+import { ExerciseCountdown } from "./components/ExerciseCountdown";
+import { Setup } from "./components/Setup";
+import {
+  BGCOLOR_SETUP,
+  BGCOLOR_WORKOUT,
+  DEFAULT_REST_TIME,
+  DEFAULT_SETS_NUMBER,
+  DEFAULT_WORK_TIME,
+  DEFAULT_COUNTDOWN_TIME,
+} from "./constants";
 
-import './App.css';
-import { Box } from './components/Box';
-import { ExerciseTimer } from './components/ExerciseTimer';
-import { speak } from './utils/speak';
-import { ExerciseCountdown } from './components/ExerciseCountdown';
-import { Setup } from './components/Setup';
-
-const DEFAULT_WORK_TIME = 45;
-const DEFAULT_REST_TIME = 15;
-const DEFAULT_SETS_NUMBER = 8;
-
-function App() {
+export const App = () => {
   const [timerActive, setTimerActive] = useState(false);
   const [preTimerActive, setPreTimerActive] = useState(false);
-  const [workoutList, setWorkoutList] = useState([]);
-  const [exercises, setExercises] = useState([]);
   const [sets, setSets] = useState(DEFAULT_SETS_NUMBER);
   const [workTime, setWorkTime] = useState(DEFAULT_WORK_TIME);
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME);
-  const boardId = 'b3SrVvdk';
-  const descriptionLabelId = '5ea544c4c52dba7aa9b89e4b';
+  const [bgColor, setBgColor] = useState(BGCOLOR_SETUP);
 
-  disableBodyScroll(document.getElementById('root'));
-
-  const authenticationSuccess = () => {
-    window.Trello.get(`boards/${boardId}/lists`, (data) => {
-      setWorkoutList(data);
-    });
-  };
-
-  const handleWorkoutSelect = (event) => {
-    window.Trello.get(`lists/${event.target.value}/cards`, (data) => {
-      const exercises = data.filter(
-        (exercise) => !exercise.idLabels.includes(descriptionLabelId)
-      );
-      setExercises(exercises);
-      setSets(exercises.length);
-    });
-  };
-
-  const authenticationFailure = () => {
-    console.log('Failed authentication');
-  };
-
-  const handleAuthorizeTrello = () => {
-    window.Trello.authorize({
-      name: 'Retro Timer',
-      scope: {
-        read: 'true',
-      },
-      success: authenticationSuccess,
-      error: authenticationFailure,
-    });
-  };
+  disableBodyScroll(document.getElementById("root"));
 
   const decrementGuard = (time, setStateFn, step) => () => {
     if (time <= 0) {
@@ -64,7 +32,8 @@ function App() {
     }
     setStateFn(time - step);
   };
-  const countDownTime = Date.now() + milliseconds.seconds(3);
+  const countDownTime =
+    Date.now() + milliseconds.seconds(DEFAULT_COUNTDOWN_TIME);
 
   const handleStart = () => {
     setPreTimerActive(true);
@@ -73,21 +42,16 @@ function App() {
 
   const handleClose = () => {
     setTimerActive(false);
+    setBgColor(BGCOLOR_SETUP);
     // noSleep.disable();
   };
 
-  const handleResetWorkout = () => {
-    setExercises([]);
-    setSets(DEFAULT_SETS_NUMBER);
-    setRestTime(DEFAULT_REST_TIME);
-    setWorkTime(DEFAULT_WORK_TIME);
-  };
-
   const handleExerciseCountdownComplete = () => {
-    speak('Go go go!!!');
+    speak("Go go go!!!");
     setTimeout(() => {
       setPreTimerActive(false);
       setTimerActive(true);
+      setBgColor(BGCOLOR_WORKOUT);
     }, 1000);
   };
 
@@ -101,12 +65,18 @@ function App() {
   const handleRestTimeDecrement = decrementGuard(restTime, setRestTime, 5);
 
   return (
-    <Box height="100vh">
+    <Box
+      height="100vh"
+      display="flex"
+      justifyContent="center"
+      flexDirection="column"
+      bgGradient={bgColor}
+    >
       {preTimerActive && (
         <ExerciseCountdown
           countDownTime={countDownTime}
           onComplete={handleExerciseCountdownComplete}
-          startMessage={exercises.length ? exercises[0].name : 'Get ready'}
+          startMessage={"Get ready"}
         />
       )}
       {timerActive && (
@@ -115,7 +85,7 @@ function App() {
           rest={restTime}
           work={workTime}
           close={handleClose}
-          exercises={exercises}
+          setBgColor={setBgColor}
         />
       )}
       {!timerActive && (
@@ -130,14 +100,8 @@ function App() {
           onRestTimeIncrement={handleRestTimeIncrement}
           onRestTimeDecrement={handleRestTimeDecrement}
           onStart={handleStart}
-          workoutList={workoutList}
-          resetWorkout={handleResetWorkout}
-          authorizeTrello={handleAuthorizeTrello}
-          selectWorkout={handleWorkoutSelect}
         />
       )}
     </Box>
   );
-}
-
-export default App;
+};

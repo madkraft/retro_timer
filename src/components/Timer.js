@@ -1,10 +1,10 @@
 import React from "react";
 import Countdown from "react-countdown";
 import milliseconds from "milliseconds";
-import { Box } from "./Box";
+import { Box, Button, Progress } from "@chakra-ui/react";
 
 export const Timer = (props) => {
-  const { sec = 0, onComplete, onTick, reset } = props;
+  const { sec = 0, onComplete, onTick, reset, showProgress } = props;
   const countDownTime = Date.now() + milliseconds.seconds(sec);
 
   const handlePause = (api) => {
@@ -23,26 +23,45 @@ export const Timer = (props) => {
       renderer={(props) => {
         return (
           <>
-            <Box fontSize="5rem" margin="1rem 0">
+            <Box fontSize="5rem" margin="1rem 0" textAlign="center">
               {props.formatted.minutes}:{props.formatted.seconds}
             </Box>
             <Box display="flex" justifyContent="space-between" marginTop="2rem">
-              <button type="button" className="nes-btn" onClick={reset}>
+              <Button variant="outline" borderColor="black" onClick={reset}>
                 Reset
-              </button>
+              </Button>
 
               {!props.api.isPaused() && (
-                <button type="button" className="nes-btn is-error" onClick={() => handlePause(props.api)}>
+                <Button
+                  variant="outline"
+                  borderColor="black"
+                  onClick={() => handlePause(props.api)}
+                >
                   Stop
-                </button>
+                </Button>
               )}
 
               {props.api.isPaused() && (
-                <button type="button" className="nes-btn is-success" onClick={() => handlePause(props.api)}>
+                <Button
+                  variant="outline"
+                  borderColor="black"
+                  onClick={() => handlePause(props.api)}
+                >
                   Resume
-                </button>
+                </Button>
               )}
             </Box>
+            {showProgress && (
+              <Progress
+                height="32px"
+                marginTop="2rem"
+                background="orange.100"
+                colorScheme="orange"
+                isAnimated={true}
+                value={sec - props.seconds}
+                max={sec}
+              />
+            )}
           </>
         );
       }}

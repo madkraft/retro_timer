@@ -1,53 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import Countdown from "react-countdown";
+import { useToast } from "@chakra-ui/react";
+import milliseconds from "milliseconds";
+
 import { speak } from "../utils/speak";
-import { Box } from "./Box";
-import styled from "styled-components";
-import doggo from "../doggo.png";
-
-const CountdownContainer = styled(Box)`
-  position: fixed;
-  left: 50px;
-  top: 20px;
-  z-index: 1;
-`;
-
-const Doggo = styled.img`
-  position: absolute;
-  top: 130px;
-  left: -70px;
-  height: 110px;
-  width: 110px;
-`;
+import { DEFAULT_COUNTDOWN_TIME } from "../constants";
 
 export const ExerciseCountdown = (props) => {
   const { countDownTime, onComplete, startMessage } = props;
-  const [message, setMessage] = useState();
-
-  const getMessage = (seconds) => {
-    return `Start in ${seconds}`;
-  };
+  const toast = useToast();
 
   return (
     <Countdown
       date={countDownTime}
       onStart={() => {
         speak(startMessage);
+        toast({
+          title: "Get ready 3... 2... 1...",
+          status: "warning",
+          duration: milliseconds.seconds(DEFAULT_COUNTDOWN_TIME),
+        });
       }}
-      onComplete={() => {
-        setMessage("Go go go!");
-        onComplete();
-      }}
-      renderer={({ seconds }) => {
-        return (
-          <CountdownContainer fontSize="3rem">
-            <Doggo src={doggo} alt="doggo" />
-            <div className="nes-balloon from-left">
-              <p>{message ?? getMessage(seconds)}</p>
-            </div>
-          </CountdownContainer>
-        );
-      }}
+      onComplete={onComplete}
+      renderer={() => null}
     />
   );
 };

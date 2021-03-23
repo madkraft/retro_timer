@@ -1,20 +1,36 @@
 import React from "react";
-import { Box } from "./Box";
+import { Box, Button } from "@chakra-ui/react";
 
 export const Counter = (props) => {
   const { handleIncrement, handleDecrement } = props;
 
   return (
-    <Box m="1.5rem 0" display="flex" justifyContent="space-between" alignItems="center">
-      <button type="button" className="nes-btn is-warning disable-dbl-tap-zoom" onClick={handleDecrement}>
+    <Box
+      m="1.5rem 0"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      color="white"
+    >
+      <Button
+        size="sm"
+        className="disable-dbl-tap-zoom"
+        variant="outline"
+        onClick={handleDecrement}
+      >
         Less
-      </button>
+      </Button>
 
-      <Box m="0 1rem">{props.children}</Box>
+      <Box fontWeight="bold">{props.children}</Box>
 
-      <button type="button" className="nes-btn is-primary disable-dbl-tap-zoom" onClick={handleIncrement}>
+      <Button
+        size="sm"
+        className="disable-dbl-tap-zoom"
+        variant="outline"
+        onClick={handleIncrement}
+      >
         More
-      </button>
+      </Button>
     </Box>
   );
 };
