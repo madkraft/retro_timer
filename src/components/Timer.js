@@ -23,7 +23,12 @@ export const Timer = (props) => {
       renderer={(props) => {
         return (
           <>
-            <Box fontSize="5rem" margin="1rem 0" textAlign="center">
+            <Box
+              fontSize="5rem"
+              fontWeight="hairline"
+              margin="1rem 0"
+              textAlign="center"
+            >
               {props.formatted.minutes}:{props.formatted.seconds}
             </Box>
             <Box display="flex" justifyContent="space-evenly" marginTop="2rem">

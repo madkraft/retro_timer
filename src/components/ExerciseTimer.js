@@ -60,7 +60,7 @@ export const ExerciseTimer = (props) => {
           size="6rem"
           thickness="0.75rem"
         >
-          <CircularProgressLabel>
+          <CircularProgressLabel fontWeight="light">
             {currentRound}/{sets}
           </CircularProgressLabel>
         </CircularProgress>
