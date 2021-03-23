@@ -53,7 +53,7 @@ export const ExerciseTimer = (props) => {
       <Box display="flex" justifyContent="center">
         <CircularProgress
           max={sets}
-          value={currentRound - 1}
+          value={currentRound}
           color="orange.400"
           trackColor="orange.100"
           capIsRound={true}
@@ -81,7 +81,6 @@ export const ExerciseTimer = (props) => {
             key="rest"
             onComplete={handleRestComplete}
             reset={close}
-            showProgress={false}
           />
         )}
       </Box>

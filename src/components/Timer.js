@@ -1,10 +1,10 @@
 import React from "react";
 import Countdown from "react-countdown";
 import milliseconds from "milliseconds";
-import { Box, Button, Progress } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 
 export const Timer = (props) => {
-  const { sec = 0, onComplete, onTick, reset, showProgress } = props;
+  const { sec = 0, onComplete, onTick, reset } = props;
   const countDownTime = Date.now() + milliseconds.seconds(sec);
 
   const handlePause = (api) => {
@@ -57,7 +57,7 @@ export const Timer = (props) => {
                 <Button
                   variant="outline"
                   borderColor="black"
-                  height="5rem"
+                  height="4rem"
                   minWidth="30%"
                   _hover={{ bg: "transparent" }}
                   _active={{ bg: "transparent" }}
@@ -67,17 +67,6 @@ export const Timer = (props) => {
                 </Button>
               )}
             </Box>
-            {showProgress && (
-              <Progress
-                height="32px"
-                marginTop="2rem"
-                background="orange.100"
-                colorScheme="orange"
-                isAnimated={true}
-                value={sec - props.seconds}
-                max={sec}
-              />
-            )}
           </>
         );
       }}
