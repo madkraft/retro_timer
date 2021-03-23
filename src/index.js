@@ -17,9 +17,3 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
-window.addToHomescreen({
-  appID: "pwa.retroTimer",
-  message: "Add to home?",
-  modal: false,
-  mandatory: false,
-});
