@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import milliseconds from "milliseconds";
-import NoSleep from "nosleep.js";
+import React, { useState } from 'react';
+import milliseconds from 'milliseconds';
 
-import "./App.css";
-import { Box } from "./components/Box";
-import { ExerciseTimer } from "./components/ExerciseTimer";
-import { speak } from "./utils/speak";
-import { ExerciseCountdown } from "./components/ExerciseCountdown";
-import { Setup } from "./components/Setup";
+import { disableBodyScroll } from 'body-scroll-lock';
+
+import './App.css';
+import { Box } from './components/Box';
+import { ExerciseTimer } from './components/ExerciseTimer';
+import { speak } from './utils/speak';
+import { ExerciseCountdown } from './components/ExerciseCountdown';
+import { Setup } from './components/Setup';
 
 const DEFAULT_WORK_TIME = 45;
 const DEFAULT_REST_TIME = 15;
 const DEFAULT_SETS_NUMBER = 8;
-
-const noSleep = new NoSleep();
 
 function App() {
   const [timerActive, setTimerActive] = useState(false);
@@ -23,8 +22,10 @@ function App() {
   const [sets, setSets] = useState(DEFAULT_SETS_NUMBER);
   const [workTime, setWorkTime] = useState(DEFAULT_WORK_TIME);
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME);
-  const boardId = "b3SrVvdk";
-  const descriptionLabelId = "5ea544c4c52dba7aa9b89e4b";
+  const boardId = 'b3SrVvdk';
+  const descriptionLabelId = '5ea544c4c52dba7aa9b89e4b';
+
+  disableBodyScroll(document.getElementById('root'));
 
   const authenticationSuccess = () => {
     window.Trello.get(`boards/${boardId}/lists`, (data) => {
@@ -34,21 +35,23 @@ function App() {
 
   const handleWorkoutSelect = (event) => {
     window.Trello.get(`lists/${event.target.value}/cards`, (data) => {
-      const exercises = data.filter((exercise) => !exercise.idLabels.includes(descriptionLabelId));
+      const exercises = data.filter(
+        (exercise) => !exercise.idLabels.includes(descriptionLabelId)
+      );
       setExercises(exercises);
       setSets(exercises.length);
     });
   };
 
   const authenticationFailure = () => {
-    console.log("Failed authentication");
+    console.log('Failed authentication');
   };
 
   const handleAuthorizeTrello = () => {
     window.Trello.authorize({
-      name: "Retro Timer",
+      name: 'Retro Timer',
       scope: {
-        read: "true",
+        read: 'true',
       },
       success: authenticationSuccess,
       error: authenticationFailure,
@@ -65,12 +68,12 @@ function App() {
 
   const handleStart = () => {
     setPreTimerActive(true);
-    noSleep.enable();
+    // noSleep.enable();
   };
 
   const handleClose = () => {
     setTimerActive(false);
-    noSleep.disable();
+    // noSleep.disable();
   };
 
   const handleResetWorkout = () => {
@@ -81,7 +84,7 @@ function App() {
   };
 
   const handleExerciseCountdownComplete = () => {
-    speak("Go go go!!!");
+    speak('Go go go!!!');
     setTimeout(() => {
       setPreTimerActive(false);
       setTimerActive(true);
@@ -103,10 +106,18 @@ function App() {
         <ExerciseCountdown
           countDownTime={countDownTime}
           onComplete={handleExerciseCountdownComplete}
-          startMessage={exercises.length ? exercises[0].name : "Get ready"}
+          startMessage={exercises.length ? exercises[0].name : 'Get ready'}
         />
       )}
-      {timerActive && <ExerciseTimer sets={sets} rest={restTime} work={workTime} close={handleClose} exercises={exercises} />}
+      {timerActive && (
+        <ExerciseTimer
+          sets={sets}
+          rest={restTime}
+          work={workTime}
+          close={handleClose}
+          exercises={exercises}
+        />
+      )}
       {!timerActive && (
         <Setup
           sets={sets}
