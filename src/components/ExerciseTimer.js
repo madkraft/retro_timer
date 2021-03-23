@@ -50,21 +50,23 @@ export const ExerciseTimer = (props) => {
 
   return (
     <Container padding="0 1rem">
-      <Box display="flex" justifyContent="center">
-        <CircularProgress
-          max={sets}
-          value={currentRound}
-          color="orange.400"
-          trackColor="orange.100"
-          capIsRound={true}
-          size="6rem"
-          thickness="0.75rem"
-        >
-          <CircularProgressLabel fontWeight="light">
-            {currentRound}/{sets}
-          </CircularProgressLabel>
-        </CircularProgress>
-      </Box>
+      {!isRest && (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress
+            max={sets}
+            value={currentRound}
+            color="orange.400"
+            trackColor="orange.100"
+            capIsRound={true}
+            size="6rem"
+            thickness="0.75rem"
+          >
+            <CircularProgressLabel fontWeight="light">
+              {currentRound}/{sets}
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Box>
+      )}
       <Box>
         {!isRest && (
           <Timer
