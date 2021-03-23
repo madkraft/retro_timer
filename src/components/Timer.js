@@ -26,8 +26,16 @@ export const Timer = (props) => {
             <Box fontSize="5rem" margin="1rem 0" textAlign="center">
               {props.formatted.minutes}:{props.formatted.seconds}
             </Box>
-            <Box display="flex" justifyContent="space-between" marginTop="2rem">
-              <Button variant="outline" borderColor="black" onClick={reset}>
+            <Box display="flex" justifyContent="space-evenly" marginTop="2rem">
+              <Button
+                variant="outline"
+                borderColor="black"
+                height="4rem"
+                minWidth="30%"
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+                onClick={reset}
+              >
                 Reset
               </Button>
 
@@ -35,6 +43,10 @@ export const Timer = (props) => {
                 <Button
                   variant="outline"
                   borderColor="black"
+                  height="4rem"
+                  minWidth="30%"
+                  _hover={{ bg: "transparent" }}
+                  _active={{ bg: "transparent" }}
                   onClick={() => handlePause(props.api)}
                 >
                   Stop
@@ -45,6 +57,10 @@ export const Timer = (props) => {
                 <Button
                   variant="outline"
                   borderColor="black"
+                  height="5rem"
+                  minWidth="30%"
+                  _hover={{ bg: "transparent" }}
+                  _active={{ bg: "transparent" }}
                   onClick={() => handlePause(props.api)}
                 >
                   Resume

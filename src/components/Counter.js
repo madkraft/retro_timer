@@ -14,6 +14,8 @@ export const Counter = (props) => {
     >
       <Button
         size="sm"
+        _hover={{ bg: "transparent" }}
+        _active={{ bg: "transparent" }}
         className="disable-dbl-tap-zoom"
         variant="outline"
         onClick={handleDecrement}
@@ -25,6 +27,8 @@ export const Counter = (props) => {
 
       <Button
         size="sm"
+        _hover={{ bg: "transparent" }}
+        _active={{ bg: "transparent" }}
         className="disable-dbl-tap-zoom"
         variant="outline"
         onClick={handleIncrement}

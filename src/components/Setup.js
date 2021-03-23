@@ -30,20 +30,22 @@ export const Setup = (props) => {
         handleIncrement={onWorkTimeIncrement}
         handleDecrement={onWorkTimeDecrement}
       >
-        Work time: {formatTime(workTime)}
+        Work: {formatTime(workTime)}
       </Counter>
       <Counter
         handleIncrement={onRestTimeIncrement}
         handleDecrement={onRestTimeDecrement}
       >
-        Rest time: {formatTime(restTime)}
+        Rest: {formatTime(restTime)}
       </Counter>
 
       <Button
         color="white"
         variant="outline"
         width="100%"
-        padding="1.5rem"
+        height="4rem"
+        _hover={{ bg: "transparent" }}
+        _active={{ bg: "transparent" }}
         onClick={onStart}
       >
         Start

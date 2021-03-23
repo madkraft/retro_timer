@@ -24,7 +24,9 @@ export const App = () => {
   const [restTime, setRestTime] = useState(DEFAULT_REST_TIME);
   const [bgColor, setBgColor] = useState(BGCOLOR_SETUP);
 
-  disableBodyScroll(document.getElementById("root"));
+  if (window.matchMedia("(display-mode: standalone)").matches) {
+    disableBodyScroll(document.getElementById("root"));
+  }
 
   const decrementGuard = (time, setStateFn, step) => () => {
     if (time <= 0) {
